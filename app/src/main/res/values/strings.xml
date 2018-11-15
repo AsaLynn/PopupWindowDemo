@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PopupWindowDemo</string>
+    <string name="text_hello_popup_window">Hello PopupWindow!</string>
+    <string name="text_user_of_3am_official_certification">3点钟官方认证用户</string>
+</resources>

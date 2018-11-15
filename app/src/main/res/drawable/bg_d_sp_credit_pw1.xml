@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="@dimen/dp_105"
+        android:height="@dimen/dp_21">
+
+        <shape android:shape="rectangle">
+
+            <solid android:color="@color/c_ff00c085" />
+            <item android:name="android:shadowColor">#40000000</item>
+            <item android:name="android:shadowDx">0</item>
+            <item android:name="android:shadowDy">1</item>
+        </shape>
+
+    </item>
+
+
+</layer-list>
+
+
+    <!--<item xmlns:android="http://schemas.android.com/apk/res/android
+    android:width="105dp" android:height="21dp">
+
+    <shape android:shape="rectangle">
+    <solid android:color="#ff00c085" />
+    <item name="android:shadowColor">#40000000</item>
+    <item name="android:shadowDx">0</item>
+    <item name="android:shadowDy">1</item>
+    </shape></item>-->
+
+    <!--<shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+
+    </shape>-->
