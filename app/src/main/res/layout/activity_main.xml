@@ -149,4 +149,23 @@
         android:background="@color/colorAccent"
         android:text="不怕没柴烧!" />
 
+    <TextView
+        android:id="@+id/tv15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/dp_80"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:text="来吧,你以为我会怕你吗,替我当着哦" />
+
+    <TextView
+        android:id="@+id/tv16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:text="神来杀神,佛来沙佛,吕小步是也!" />
 </LinearLayout>

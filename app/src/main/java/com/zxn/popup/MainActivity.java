@@ -31,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     TextView tv13;
     @BindView(R.id.tv14)
     TextView tv14;
+    @BindView(R.id.tv15)
+    TextView tv15;
+    @BindView(R.id.tv16)
+    TextView tv16;
     private CreditPW mCreditPW;
 
     @Override
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         //CreditSignUtils.showCreditLeftSide(tv12, true);
         CreditSignUtils.showCreditRightSide(tv13, true);
         CreditSignUtils.showCreditLeftSide(tv14, true);
+        CreditSignUtils.showCreditRightSide(tv15, true);
+        CreditSignUtils.showCreditLeftSide(tv16, true);
     }
 
     @OnClick({R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5, R.id.tv6, R.id.tv7, R.id.tv8, R.id.tv9, R.id.tv10, R.id.tv11, R.id.tv12})

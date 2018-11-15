@@ -46,7 +46,7 @@ public class CreditPW
         setContentView(contentView);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setOutsideTouchable(true);
-        setClippingEnabled(false);
+        setClippingEnabled(true);//
         setTouchable(false);
         setOnDismissListener(this);
     }
