@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ public class CreditPW
     private String TAG = "CreditPW";
     private int mOffsetViewDistance;
     private boolean mIsLeftSide;
+    private int mScreenWidth;
+    private int mPwWidth;
 
     public CreditPW(Context context) {
         super(context);
@@ -34,6 +37,8 @@ public class CreditPW
 
     private void init(Context context) {
         mOffsetViewDistance = context.getResources().getDimensionPixelSize(R.dimen.dp_6);
+        WindowManager wmManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        mScreenWidth = getScreenWidth(wmManager);
         TextView contentView = new TextView(context);
         contentView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
         contentView.setTextColor(context.getResources().getColor(R.color.c_ffffff));
@@ -75,28 +80,111 @@ public class CreditPW
 
     @Override
     public void showAsDropDown(View anchor) {
+
+        mPwWidth = getContentView().getMeasuredWidth();
+        int[] location = new int[2];
+        anchor.getLocationInWindow(location);
+
+        //y坐标方向定位
+        int popupHeight = getContentView().getMeasuredHeight();
+        int ySpace = mOffsetViewDistance;
+        int yOffset = -(anchor.getHeight() + popupHeight + ySpace);
+
         if (anchor instanceof TextView) {
             TextView v = (TextView) anchor;
-            //x坐标方向定位
-            mIsLeftSide = v.getCompoundDrawables()[0] != null;
-            getContentView()
-                    .setBackgroundResource(mIsLeftSide ? R.drawable.bg_d_credit_pw_right : R.drawable.bg_d_credit_pw_left);
-
-            Drawable drawable = mIsLeftSide ? v.getCompoundDrawables()[0] : v.getCompoundDrawables()[2];
-            int xSpace = drawable == null ? 0 : drawable.getIntrinsicWidth() / 2;
-            int xPadding = v.getCompoundDrawablePadding();
-            //左侧便宜距离,右侧侧便宜距离,
-            int xOffset = mIsLeftSide ? -(getContentView().getMeasuredWidth() - xSpace - xPadding) : (v.getWidth() - xSpace - xPadding);
-
-            //y坐标方向定位
-            int popupHeight = getContentView().getMeasuredHeight();
-            int ySpace = mOffsetViewDistance;
-            int yOffset = -(v.getHeight() + popupHeight + ySpace);
-            showAsDropDown(v, xOffset, yOffset);
+            if (v.getCompoundDrawables()[0] == null && v.getCompoundDrawables()[2] == null) {
+                showViewPoppup(anchor, yOffset, location);
+            } else {
+                showTextImgPoppup(v, yOffset, location);
+            }
         } else {
-            super.showAsDropDown(anchor);
+            //普通正常view的弹框显示.
+            showViewPoppup(anchor, yOffset, location);
         }
     }
 
+    private void showTextImgPoppup(TextView v, int yOffset, int[] location) {
+        //x坐标方向定位
+        int xPadding = v.getCompoundDrawablePadding();
+        if (v.getCompoundDrawables()[0] != null) {
+            Drawable drawable = v.getCompoundDrawables()[0];
+            int xSpace = drawable.getIntrinsicWidth() / 2;
+            int leftDis = location[0] + xPadding + xSpace;
+            if (leftDis >= mPwWidth) {
+                getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_right);
+                int xOffset = -(getContentView().getMeasuredWidth() - xSpace - xPadding);
+                showAsDropDown(v, xOffset, yOffset);
+            } else {
+                getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_left);
+                int xOffset = xSpace + xPadding;
+                showAsDropDown(v, xOffset, yOffset);
+            }
+        } else {//v.getCompoundDrawables()[2] != null
+            Drawable drawable = v.getCompoundDrawables()[2];
+            int xSpace = drawable.getIntrinsicWidth() / 2;
+            int rightDis = mScreenWidth - (location[0] + v.getWidth() - xPadding - xSpace);
+            if (rightDis >= mPwWidth) {
+                getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_left);
+                int xOffset = v.getWidth() - xSpace - xPadding;
+                showAsDropDown(v, xOffset, yOffset);
+            } else {
+                getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_right);
+                int xOffset = v.getWidth() - mPwWidth - xSpace - xPadding;
+                showAsDropDown(v, xOffset, yOffset);
+            }
+        }
+    }
+
+    private void showViewPoppup(View anchor, int yOffset, int[] location) {
+        int leftDistance = location[0] + anchor.getWidth() / 2;
+        int rightDistance = mScreenWidth - location[0] - anchor.getWidth() / 2;
+        int xOffset = 0;
+        if (leftDistance < mPwWidth) {//左对齐
+            getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_left);
+            xOffset = anchor.getWidth() / 2;
+        } else if (rightDistance < mPwWidth) {//右对齐
+            getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_right);
+            xOffset = -(mPwWidth - anchor.getWidth() / 2);
+        } else {
+            if (leftDistance <= rightDistance) {//左对齐
+                getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_left);
+                xOffset = anchor.getWidth() / 2;
+            } else {//右对齐
+                getContentView().setBackgroundResource(R.drawable.bg_d_credit_pw_right);
+                xOffset = -(mPwWidth - anchor.getWidth() / 2);
+            }
+        }
+        showAsDropDown(anchor, xOffset, yOffset);
+    }
+
+    public static int getScreenWidth(WindowManager windowManager) {
+        int widthPixels = 0;
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        if (aboveApiLevel(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+                && !aboveApiLevel(Build.VERSION_CODES.JELLY_BEAN_MR1)) {
+            try {
+                widthPixels = (Integer) Display.class.getMethod("getRawWidth").invoke(defaultDisplay);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (aboveApiLevel(Build.VERSION_CODES.JELLY_BEAN_MR1)) {
+            android.graphics.Point realSize = new android.graphics.Point();
+            defaultDisplay.getRealSize(realSize);
+            widthPixels = realSize.x;
+        } else {
+            DisplayMetrics metrics = new DisplayMetrics();
+            defaultDisplay.getMetrics(metrics);
+            widthPixels = metrics.widthPixels;
+        }
+        return widthPixels;
+    }
+
+    public static boolean aboveApiLevel(int sdkInt) {
+        return getApiLevel() >= sdkInt;
+    }
+
+    public static int getApiLevel() {
+        return Build.VERSION.SDK_INT;
+    }
 
 }

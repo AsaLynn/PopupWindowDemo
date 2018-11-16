@@ -1,6 +1,8 @@
 package com.zxn.popup;
 
 import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -29,12 +31,11 @@ public class CreditSignUtils {
      * @param view
      * @param isCredited true已经认证,否则反之.
      */
-    public static void showCreditLeftSide(TextView view, boolean isCredited) {
+    private static void showCreditLeftSide(TextView view, boolean isCredited) {
         Drawable drawable = isCredited ? getCreditDrawable(view) : null;
         view.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         if (isCredited) {
             CreditPW instance = CreditPW.getInstance(view.getContext());
-            //instance.setSide(true);
             view.setOnClickListener(instance);
         }
     }
@@ -45,7 +46,7 @@ public class CreditSignUtils {
      * @param view
      * @param isCredited true已经认证,否则反之.
      */
-    public static void showCreditRightSide(TextView view, boolean isCredited) {
+    private static void showCreditRightSide(TextView view, boolean isCredited) {
         Drawable drawable = isCredited ? getCreditDrawable(view) : null;
         view.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
         if (isCredited) {
@@ -70,4 +71,12 @@ public class CreditSignUtils {
         }
     }
 
+    public static void showCredit(View view, boolean isCredited) {
+        //view.setImageResource(R.drawable.ic_auth);
+        view.setVisibility(isCredited ? View.VISIBLE : View.GONE);
+
+        if (isCredited) {
+            view.setOnClickListener(CreditPW.getInstance(view.getContext()));
+        }
+    }
 }

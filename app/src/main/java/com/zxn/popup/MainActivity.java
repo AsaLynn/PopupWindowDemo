@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -35,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
     TextView tv15;
     @BindView(R.id.tv16)
     TextView tv16;
+    @BindView(R.id.tv18)
+    TextView tv18;
+    @BindView(R.id.iv1)
+    ImageView iv1;
+    @BindView(R.id.iv2)
+    ImageView iv2;
+    @BindView(R.id.iv3)
+    ImageView iv3;
     private CreditPW mCreditPW;
 
     @Override
@@ -53,10 +62,19 @@ public class MainActivity extends AppCompatActivity {
 
         //CreditSignUtils.showCreditRightSide(tv11, true);
         //CreditSignUtils.showCreditLeftSide(tv12, true);
-        CreditSignUtils.showCreditRightSide(tv13, true);
-        CreditSignUtils.showCreditLeftSide(tv14, true);
-        CreditSignUtils.showCreditRightSide(tv15, true);
-        CreditSignUtils.showCreditLeftSide(tv16, true);
+        CreditSignUtils.showCredit(tv13, true);
+        //CreditSignUtils.showCreditLeftSide(tv14, true);
+
+        CreditSignUtils.showCredit(tv14, true, true);
+        CreditSignUtils.showCredit(tv15, true, true);
+
+        CreditSignUtils.showCredit(tv16, true, false);
+        CreditSignUtils.showCredit(tv18, true, false);
+
+
+        CreditSignUtils.showCredit(iv1, true);
+        CreditSignUtils.showCredit(iv2, true);
+        CreditSignUtils.showCredit(iv3, true);
     }
 
     @OnClick({R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5, R.id.tv6, R.id.tv7, R.id.tv8, R.id.tv9, R.id.tv10, R.id.tv11, R.id.tv12})
