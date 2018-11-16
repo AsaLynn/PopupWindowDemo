@@ -20,6 +20,18 @@ allprojects {
         google()
         jcenter()
     }
+
+    //配置整个项目所依赖的库,保持指定的版本,否则报错.
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '26.1.0'//'27.0.0
+                }
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {
