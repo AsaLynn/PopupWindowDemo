@@ -12,21 +12,36 @@
         android:text="使用showAtLocation函数,在屏幕上弹框" />
 
     <TextView
-        android:id="@+id/tv1"
+        android:id="@+id/tv20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:background="@color/colorAccent"
-        android:text="屏幕左上角" />
+        android:text="传统的气泡" />
 
-    <TextView
-        android:id="@+id/tv2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:text="屏幕右边下角" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@color/colorAccent"
+            android:text="屏幕左上角" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:background="@color/colorAccent"
+            android:text="屏幕右边下角" />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv3"

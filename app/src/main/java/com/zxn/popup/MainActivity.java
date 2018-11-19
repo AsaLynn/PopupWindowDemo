@@ -1,12 +1,15 @@
 package com.zxn.popup;
 
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tv16;
     @BindView(R.id.tv18)
     TextView tv18;
+    @BindView(R.id.tv20)
+    TextView tv20;
     @BindView(R.id.iv1)
     ImageView iv1;
     @BindView(R.id.iv2)
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mCreditPW = new CreditPW(this);
+        //mCreditPW = new CreditPW(this);
         //mCreditPW = CreditPW.getInstance(this);
 
         /*Drawable drawable = getResources().getDrawable(R.drawable.ic_auth);
@@ -77,12 +82,15 @@ public class MainActivity extends AppCompatActivity {
         CreditSignUtils.showCredit(iv3, true);
     }
 
-    @OnClick({R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5, R.id.tv6, R.id.tv7, R.id.tv8, R.id.tv9, R.id.tv10, R.id.tv11, R.id.tv12})
+    @OnClick({R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5, R.id.tv6, R.id.tv7, R.id.tv8, R.id.tv9, R.id.tv10, R.id.tv11, R.id.tv12, R.id.tv20})
     public void onViewClicked(View view) {
         int[] outLocation = new int[2];
         view.getLocationInWindow(outLocation);
         Log.i(TAG, "onViewClicked: x==" + outLocation[0] + "  y==" + outLocation[1]);
         switch (view.getId()) {
+            case R.id.tv20:
+                showPopupWindow(view);
+                break;
             case R.id.tv1:
                 //屏幕左上角
                 mCreditPW.showAtLocation(view, Gravity.NO_GRAVITY, 0, 0);
@@ -147,6 +155,26 @@ public class MainActivity extends AppCompatActivity {
             case R.id.tv12:
                 break;
         }
+    }
+
+    private void showPopupWindow(View anchor) {
+        PopupWindow popupWindow = new PopupWindow(this);
+        //popupWindow.setContentView();
+        popupWindow.showAsDropDown(anchor);
+
+        View contentView = new TextView(this);
+        ((TextView) contentView).setText("传统气泡!");
+        /*popupWindow = new PopupWindow(contentView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);*/
+        // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        // 设置好参数之后再show
+        // popupWindow.showAsDropDown(mButton2);  // 默认在mButton2的左下角显示
+        contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int xOffset = anchor.getWidth() / 2 - contentView.getMeasuredWidth() / 2;
+        popupWindow.showAsDropDown(anchor, xOffset, 0);    // 在mButton2的中间显示
+
+
     }
 
 
