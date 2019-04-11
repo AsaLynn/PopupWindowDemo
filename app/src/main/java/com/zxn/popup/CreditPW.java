@@ -32,6 +32,7 @@ public class CreditPW
     private int mPwWidth;
 
     private CreditPW(Context context) {
+        //使得PopupWindow在指定View的下方显示,否则会出现屏幕顶部.
         this(context, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
